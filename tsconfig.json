@@ -16,7 +16,6 @@
     "incremental": true,
     "paths": {
       "*": ["./src/*"],
-      "@": ["./src"],
       "public": ["./public"]
     }
   },
