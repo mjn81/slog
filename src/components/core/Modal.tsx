@@ -11,7 +11,7 @@ const Background = ({children, isOpen, setIsOpen}: BackgroundProps) => {
   return (
 		<section
 			className={clsx(
-        'absolute inset-0 z-50 backdrop-blur w-full h-full flex justify-center items-center',
+        'absolute bg-black bg-opacity-40 inset-0 z-50 backdrop-blur w-full h-full flex justify-center items-center',
         inter.className,
         isOpen ? 'block' : 'hidden'
 			)}
