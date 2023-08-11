@@ -33,7 +33,7 @@ body {
 
 @layer components {
 .input-custom {
-  @apply placeholder:text-sm input transition-colors input-solid hover:input-primary hover:bg-opacity-0 focus-within:bg-opacity-0 focus-within:input-primary max-w-full;
+  @apply placeholder:text-sm placeholder:text-content3 input transition-colors input-solid hover:input-primary hover:bg-opacity-0 focus-within:bg-opacity-0 focus-within:input-primary max-w-full;
 }
 
 .input-custom.input-custom-error {

@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
+import { BiBookmark, BiSolidBookmark } from 'react-icons/bi';
 import { BsBookmarks, BsBookmarksFill } from 'react-icons/bs';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
@@ -40,8 +41,12 @@ export const TileCard = ({
 					width={900}
 					height={500}
 				/>
-				<button className='absolute z-40 top-3 right-3 btn w-10 aspect-square p-0 border border-border'>
-					{data.isBookmarked ? <BsBookmarksFill size={18} /> : <BsBookmarks size={18} />}
+				<button className="absolute z-40 top-3 right-3 btn w-10 aspect-square p-0 border border-border">
+					{data.isBookmarked ? (
+						<BiSolidBookmark size={22} />
+					) : (
+						<BiBookmark size={22} />
+					)}
 				</button>
 			</header>
 			<main className="card-body pt-3 gap-1">
@@ -70,12 +75,11 @@ export const TileCard = ({
 							data.isLiked ? 'text-content1' : 'text-content3'
 						)}
 					>
-						{
-							data.isLiked ? 
+						{data.isLiked ? (
 							<AiFillHeart size={23} />
-							:
-						<AiOutlineHeart size={23} />
-						}
+						) : (
+							<AiOutlineHeart size={23} />
+						)}
 						{data.like}
 					</span>
 					<span className="flex-grow" />

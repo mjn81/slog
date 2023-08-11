@@ -1,10 +1,13 @@
 import clsx from 'clsx';
 import { pacifico } from 'config/font';
+import { client } from 'config/pocketbase';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react'
-
 import { useForm, SubmitHandler } from 'react-hook-form';
+import toast from 'react-hot-toast';
+
 import { emailRegex } from 'utils/regex';
 
 type LoginInputs = {
@@ -15,10 +18,27 @@ type LoginInputs = {
 const Login = () => {
 
   const {register, handleSubmit, formState: {errors} } = useForm<LoginInputs>();
+	const [isLoad, setIsLoad] = React.useState(false);
+	const router = useRouter();
+	const onLogin: SubmitHandler<LoginInputs> = (data) => {
+		setIsLoad(true);
+		client
+			.collection('users')
+			.authWithPassword(data.email, data.password)
+			.then((res) => {
+				toast.success('Login success');
+				router.replace('/');
+			})
+			.catch((err) => {
+				toast.error(err.message);
+			})
+			.finally(() => {
+				setIsLoad(false);
+			});
+	};
 
-  const onLogin: SubmitHandler<LoginInputs> = (data) => console.log(data);
-	
-	console.log(errors.password, errors.email);
+	console.log(client.authStore.token);
+
   return (
 		<>
 			<Head>
@@ -113,6 +133,7 @@ const Login = () => {
 							)}
 						</section>
 						<input
+							autoFocus
 							{...register('email', {
 								required: {
 									message: 'Email address is required.',
@@ -169,7 +190,11 @@ const Login = () => {
 					</div>
 					<div className="form-field">
 						<div className="form-control justify-between">
-							<button type="submit" className="btn btn-primary w-full">
+							<button
+								type="submit"
+								disabled={isLoad}
+								className={clsx("btn btn-primary w-full", isLoad && "btn-loading")}
+							>
 								Sign in
 							</button>
 						</div>

@@ -1,14 +1,13 @@
 import React from 'react'
 import Head from 'next/head';
-import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import clsx from 'clsx';
-
-
 
 import { emailRegex } from 'utils/regex';
 import { pacifico } from 'config/font';
 import { client } from 'config/pocketbase';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 type RegisterInputs = {
 	username: string;
@@ -18,12 +17,28 @@ type RegisterInputs = {
 }
 
 const Register = () => {
-
-	const {register,handleSubmit, watch , formState: {errors}} = useForm<RegisterInputs>();
+	const {register,handleSubmit, watch, formState: {errors}} = useForm<RegisterInputs>();
+	const [isLoad, setIsLoad] = React.useState(false);
   
+	const router = useRouter();
+
+
 	const onRegister: SubmitHandler<RegisterInputs> = (value) => {
-		client.collection('users').create(value);
+		setIsLoad(true);
+		client
+			.collection('users')
+			.create(value)
+			.then((res) => {
+				toast.success('Register success');
+				router.push('/auth/login');
+			})
+			.catch((err) => {
+				toast.error(err.message);
+			}).finally(() => {
+				setIsLoad(false);
+			});
 	};
+
 	return (
 		<>
 			<Head>
@@ -152,7 +167,14 @@ const Register = () => {
 					</div>
 					<div className="form-field">
 						<div className="form-control justify-between">
-							<button type="submit" className="btn btn-primary w-full">
+							<button
+								type="submit"
+								disabled={isLoad}
+								className={clsx(
+									'btn btn-primary w-full',
+									isLoad && 'btn-loading'
+								)}
+							>
 								Sign Up
 							</button>
 						</div>

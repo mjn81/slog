@@ -1,21 +1,30 @@
 import { useState } from 'react';
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
+import { IoCloseOutline } from 'react-icons/io5';
+import { BiSearch } from 'react-icons/bi';
+import { Toaster } from 'react-hot-toast';
 
 import 'styles/globals.css'
 import { inter } from 'config/font';
 import { Header, Modal } from 'components';
-import { BiSearch } from 'react-icons/bi';
-import { IoCloseOutline } from 'react-icons/io5';
-import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isSearch, setIsSearch] = useState(false);
   const isAuth = useRouter().pathname.includes('auth');
   return (
 		<main className={`bg-backgroundPrimary min-h-screen ${inter.className}`}>
-			<Header hideRegister={!isAuth} hideSearch={isAuth} setIsSearch={setIsSearch} />
+			<Header
+				hideRegister={!isAuth}
+				hideSearch={isAuth}
+				setIsSearch={setIsSearch}
+			/>
 			<Component {...pageProps} />
-
+			<Toaster
+				toastOptions={{
+					position: 'bottom-center',
+				}}
+			/>
 			<Modal.Background isOpen={isSearch} setIsOpen={setIsSearch}>
 				<section className="mx-3 w-full max-w-xl min-h-[200px] bg-backgroundSecondary rounded-xl border border-border">
 					<section className="flex gap-3 items-center px-3 h-12 border-b border-border">
